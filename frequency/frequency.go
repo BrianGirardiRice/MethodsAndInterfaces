@@ -1,6 +1,8 @@
 package frequency
 
-import "sort"
+import (
+	"sort"
+)
 
 type FreqCompleter struct {
 	data map[string]int
@@ -17,14 +19,17 @@ func (f FreqCompleter) Complete(prefix string) []string {
 
 	sort.Slice(matches, func(i, j int) bool {
 		wi, wj := matches[i], matches[j]
-		if f.data[wi] == f.data[wj] {
+		fi, fj := f.data[wi], f.data[wj]
+		if fi == fj {
 			return wi < wj
 		}
-		return f.data[wi] > f.data[wj]
+		return fi > fj
 	})
 
-	sort.Strings(matches)
-	return matches[:10]
+	if len(matches) > 10 {
+		return matches[:10]
+	}
+	return matches
 }
 func New(data map[string]int) FreqCompleter {
 	return FreqCompleter{data: data}

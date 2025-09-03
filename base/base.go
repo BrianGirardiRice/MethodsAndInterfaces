@@ -16,7 +16,10 @@ func (b BaseCompleter) Complete(prefix string) []string {
 	}
 
 	sort.Strings(matches)
-	return matches[:10]
+	if len(matches) > 10 {
+		return matches[:10]
+	}
+	return matches
 }
 func New(data map[string]int) BaseCompleter {
 	return BaseCompleter{data: data}
